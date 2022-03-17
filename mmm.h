@@ -10,16 +10,16 @@ double mmm_verify();
 
 //VARIABLES
 extern int globalsize; 
-extern double **firstMatrix;
-extern double **secondMatrix;
-extern double **finalMatrix;
+extern int **firstMatrix;
+extern int **secondMatrix;
+extern int **finalMatrix;
 
 //holds info for the parallel MMM
 typedef struct thread_args
 {
   int tid;    //Thread ID
-  int begin; // index of first output row to compute
-  int end;   // index of last output row to compute
+  int start; 
+  int end; 
 } thread_args;
 
 #endif /* MMM_H_ */

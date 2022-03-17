@@ -6,9 +6,9 @@
 #include "mmm.h"
 
 int globalsize;
-double** firstMatrix;
-double** secondMatrix;
-double** finalMatrix;
+int** firstMatrix;
+int** secondMatrix;
+int** finalMatrix;
 
 /**
  * Allocate and initialize the matrices on the heap. Populate
@@ -16,16 +16,15 @@ double** finalMatrix;
  */
 void mmm_init(int size)
 {
-	globalsize = size;
 	//part one of memory allocation
-	firstMatrix = (double**)malloc(size * sizeof(double *)); 
-	secondMatrix = (double**)malloc(size * sizeof(double *)); 
-	finalMatrix = (double**)malloc(size * sizeof(double *)); 
+	firstMatrix = (int**)malloc(size * sizeof(int **)); 
+	secondMatrix = (int**)malloc(size * sizeof(int **)); 
+	finalMatrix = (int**)malloc(size * sizeof(int **)); 
 	//them allocate within the allocation
 	for (int i = 0; i < size; i++){ 
-        firstMatrix[i] = (double *)malloc(size * sizeof(double));
-		secondMatrix[i] = (double *)malloc(size * sizeof(double));
-		finalMatrix[i] = (double *)malloc(size * sizeof(double));
+        firstMatrix[i] = (int **)malloc(size * sizeof(int **));
+		secondMatrix[i] = (int **)malloc(size * sizeof(int **));
+		finalMatrix[i] = (int **)malloc(size * sizeof(int **));
     }
 	//initialize with random integers within the matricies between 0 and 99
 	for (int i = 0; i < size; i++){ 
@@ -34,6 +33,7 @@ void mmm_init(int size)
 			secondMatrix[i][j] = rand() % 100;
         }
     }
+	globalsize = size;
 }
 
 /**
@@ -88,14 +88,14 @@ void mmm_seq()
 void *mmm_par(void *args)
 {
   	thread_args *thread = (thread_args *)args;
-	double sum;
-	for (int i = thread->begin; i <= thread->end; i++){
+	int total;
+	for (int i = thread->start; i <= thread->end; i++){
         for (int j = 0; j < globalsize; j++){
 			for (int a = 0; a < globalsize; a++){
-				sum += firstMatrix[i][a] * secondMatrix[a][j];
+				total += firstMatrix[i][a] * secondMatrix[a][j];
 			}
-			finalMatrix[i][j] = sum;
-			sum = 0;
+			finalMatrix[i][j] = total;
+			total = 0;
         }
     }
 }
@@ -109,11 +109,11 @@ void *mmm_par(void *args)
 */
 double mmm_verify()
 {
-	int difference; 
+	double difference; 
 	for (int i = 0; i < globalsize; i++){
         for (int j = 0; j < globalsize; j++){
-            if (fabs(firstMatrix[i][j] - secondMatrix[i][j]) > difference){
-				difference = fabs(firstMatrix[i][j] - secondMatrix[i][j]);
+            if (fabs(firstMatrix[i][j] - secondMatrix[i][j]) > difference){ 
+				difference = fabs(firstMatrix[i][j] - secondMatrix[i][j]); //absolute value 
 			}
         }
     }
