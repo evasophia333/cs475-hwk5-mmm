@@ -10,9 +10,9 @@ double mmm_verify();
 
 //VARIABLES
 extern int globalsize; 
-extern int **firstMatrix;
-extern int **secondMatrix;
-extern int **finalMatrix;
+extern double **firstMatrix;
+extern double **secondMatrix;
+extern double **finalMatrix;
 
 //holds info for the parallel MMM
 typedef struct thread_args

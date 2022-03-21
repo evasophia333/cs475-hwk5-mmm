@@ -5,10 +5,11 @@
 #include <stdio.h>
 #include "mmm.h"
 
+double **firstMatrix;
+double **secondMatrix;
+double **finalMatrix;
 int globalsize;
-int** firstMatrix;
-int** secondMatrix;
-int** finalMatrix;
+
 
 /**
  * Allocate and initialize the matrices on the heap. Populate
@@ -17,14 +18,14 @@ int** finalMatrix;
 void mmm_init(int size)
 {
 	//part one of memory allocation
-	firstMatrix = (int**)malloc(size * sizeof(int **)); 
-	secondMatrix = (int**)malloc(size * sizeof(int **)); 
-	finalMatrix = (int**)malloc(size * sizeof(int **)); 
+	firstMatrix = (double **)malloc(sizeof(double*) * size); 
+	secondMatrix = (double **)malloc(sizeof(double*) * size); 
+	finalMatrix = (double **)malloc(sizeof(double*)* size); 
 	//them allocate within the allocation
 	for (int i = 0; i < size; i++){ 
-        firstMatrix[i] = (int **)malloc(size * sizeof(int **));
-		secondMatrix[i] = (int **)malloc(size * sizeof(int **));
-		finalMatrix[i] = (int **)malloc(size * sizeof(int **));
+        firstMatrix[i] = (double *)malloc(sizeof(double)*size );
+		secondMatrix[i] = (double *)malloc(sizeof(double)*size);
+		finalMatrix[i] = (double *)malloc(sizeof(double)*size);
     }
 	//initialize with random integers within the matricies between 0 and 99
 	for (int i = 0; i < size; i++){ 
@@ -58,11 +59,7 @@ void mmm_freeup()
 	free(firstMatrix);
     free(secondMatrix);
     free(finalMatrix);
-	for (int i = 0; i < globalsize; i++){
-		free(finalMatrix[i]);
-        free(firstMatrix[i]);
-		free(secondMatrix[i]);
-    }
+
 }
 
 /**
